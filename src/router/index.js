@@ -11,7 +11,17 @@ const router = new Router({
       redirect: "/Login",
     },
     {
-      path: "/home",
+      path: "/login",
+      name: "Login",
+      component: () => import("@/views/Login.vue"),
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: () => import("@/views/Register.vue"),
+    },
+    {
+      path: "/",
       name: "home",
       component: home,
       redirect: "/page1",
@@ -21,16 +31,6 @@ const router = new Router({
           name: "Admin",
           component: () => import("@/views/Admin.vue"),
           meta: { requiresAuth: true, role: "admin" }, // 需要管理员权限
-        },
-        {
-          path: "/login",
-          name: "Login",
-          component: () => import("@/views/Login.vue"),
-        },
-        {
-          path: "/register",
-          name: "Register",
-          component: () => import("@/views/Register.vue"),
         },
         {
           path: "/page1",
@@ -62,13 +62,16 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // 检查是否需要登录
-  if (to.meta.requiresAuth && !token) {
-    next("/login"); // 未登录，跳转到登录页面
-  } else if (to.meta.role && to.meta.role !== role) {
-    next("/"); // 无权限，跳转到首页
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!token) {
+      next("/login");
+    } else if (to.meta.role && to.meta.role !== role) {
+      next("/home/page1"); // 无权限时跳转到默认页
+    } else {
+      next();
+    }
   } else {
-    next(); // 放行
+    next(); // 不需要认证的路由直接放行
   }
 });
 

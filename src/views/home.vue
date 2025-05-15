@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%">
-    <div class="header">
+    <div class="header" v-if="isLoggedIn">
       <div class="selectRange">
         <Menu
           mode="horizontal"
@@ -10,9 +10,9 @@
           <MenuItem name="page1"> page1 </MenuItem>
           <MenuItem name="page2"> page2 </MenuItem>
           <MenuItem name="page3"> page3 </MenuItem>
-          <!--                    <MenuItem name="page4">-->
-          <!--                        page4-->
-          <!--                    </MenuItem>-->
+          <MenuItem v-if="role === 'admin'" name="Admin"> 管理员页面 </MenuItem>
+          <MenuItem name="page4"> page4 </MenuItem>
+          <MenuItem @click="logout">退出登录</MenuItem>
         </Menu>
       </div>
       <div class="header-title">大数据可视化平台</div>
@@ -67,6 +67,8 @@ export default {
   name: "",
   data() {
     return {
+      isLoggedIn: false,
+      role: "",
       activeName: "month", // 默认显示近一月
       modal: false,
       flag: false,
@@ -84,10 +86,27 @@ export default {
     };
   },
   mounted() {
+    this.checkLoginStatus();
     window.addEventListener("resize", this.resizeFn);
     this.handleSelect(this.activeName); // 默认显示近一个月
   },
   methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      this.isLoggedIn = false; // 设置为未登录
+      this.$router.push("/login"); // 跳转到登录页面
+    },
+    checkLoginStatus() {
+      const token = localStorage.getItem("token");
+      const role = localStorage.getItem("role");
+      if (token) {
+        this.isLoggedIn = true; // 设置为已登录
+        this.role = role; // 设置用户角色
+      } else {
+        this.isLoggedIn = false; // 确保未登录时为 false
+      }
+    },
     pickStartDate(date) {
       // 选择开始时间的回调
       this.startTime = date;

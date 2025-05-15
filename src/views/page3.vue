@@ -2,183 +2,178 @@
     <Row class="page3">
         <Col :span="7">
             <div class="left">
-                <span class='title'><span class="title-text">模块一分析</span></span>
+                <span class='title'><span class="title-text">系统监控</span></span>
                 <span class="angle1"></span>
                 <span class="angle2"></span>
                 <span class="angle3"></span>
                 <span class="angle4"></span>
-                <div class="left1" style="height:50%;">
-                    <div style="height:65%;">
-                        <chart1
-                            id="left_1"
-                            title="分析标题"
-                            :data="data1"
-                            ref="channelBar1"
-                        ></chart1>
-                        <chart2
-                            id="left_2"
-                            :data="data2"
-                            ref="distributionSolider1"
-                        ></chart2>
+                <div class="left1" style="height:60%;">
+                    <div style="height:50%;">
+                        <div id="cpuChart" style="height:100%;"></div>
                     </div>
-                    <div style="height: 35%;display: flex">
-                        <div style="height: 100%; width: 33.33%;">
-                            <pie ref="chart3" id="pie_1" :data="pieData1"></pie>
-                        </div>
-                        <div style="height: 100%; width: 33.33%;">
-                            <pie ref="chart3" id="pie_3" :data="pieData2"></pie>
-                        </div>
-                        <div style="height: 100%; width: 33.33%;">
-                            <pie ref="chart3" id="pie_2" :data="pieData3"></pie>
-                        </div>
+                    <div style="height:50%;">
+                        <div id="gpuChart" style="height:100%;"></div>
                     </div>
                 </div>
-                <div class="left1" style="height:28%;">
-                    <chart3 ref="redPocket"></chart3>
-                </div>
-                <div style="height:22%;">
-                    <div style="height:100%;">
-                        <chart1
-                            id="left_5"
-                            title="分析标题2"
-                            :data="data3"
-                            ref="channelBar2"
-                        ></chart1>
-                        <chart2
-                            id="left_6"
-                            :data="data4"
-                            ref="distributionSolider2"
-                        ></chart2>
-                    </div>
-                    <!--                        <div style="height:45%;"></div>-->
+                <div class="left1" style="height:40%;">
+                    <div id="dataTypeChart" style="height:100%;"></div>
                 </div>
             </div>
         </Col>
         <Col :span="10" style="padding:0 1%;">
             <div class="center-top">
-                <china-map ref="chinaMap"></china-map>
+                <div id="dbChart" style="height:100%;"></div>
             </div>
             <div class="center-bottom">
-                <span class='title'><span class="title-text">模块二分析</span></span>
+                <span class='title'><span class="title-text">设备信息</span></span>
                 <span class="angle1"></span>
                 <span class="angle2"></span>
                 <span class="angle3"></span>
                 <span class="angle4"></span>
-                <Row class="bottom-radars">
-                    <Col span="6">
-                        <radar
-                            id='bottom_1_1'
-                            :data=data5
-                            ref="chart1"
-                        ></radar>
-                    </Col>
-                    <Col span="6">
-                        <radar
-                            id='bottom_1_2'
-                            :data=data6
-                            ref="chart2"
-                        ></radar>
-                    </Col>
-                    <Col span="6">
-                        <radar
-                            id='bottom_1_3'
-                            :data=data7
-                            ref="chart3"
-                        ></radar>
-                    </Col>
-                    <Col span="6">
-                        <radar
-                            id='bottom_1_4'
-                            :data=data8
-                            ref="chart4"
-                        ></radar>
-                    </Col>
-                </Row>
-                <Row class="bottom-bars">
-                    <Col span="6">
-                        <chart4
-                            id="bottom_2_1"
-                            :data="data9"
-                            ref="chart5"
-                        ></chart4>
-                    </Col>
-                    <Col span="6">
-                        <chart4
-                            id="bottom_2_2"
-                            :data="data10"
-                            ref="chart6"
-                        ></chart4>
-                    </Col>
-                    <Col span="6">
-                        <chart4
-                            id="bottom_2_3"
-                            :data="data11"
-                            ref="chart7"
-                        ></chart4>
-                    </Col>
-                    <Col span="6">
-                        <chart4
-                            id="bottom_2_4"
-                            :data="data12"
-                            ref="chart8"
-                        ></chart4>
-                    </Col>
-                </Row>
+                <div style="height:100%; overflow:auto;">
+                    <table class="device-table">
+                        <thead>
+                            <tr>
+                                <th>设备名称</th>
+                                <th>编号</th>
+                                <th>类型</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>永康摄像头</td>
+                                <td>video-1</td>
+                                <td>H264</td>
+                                <td>4Mb</td>
+                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            </tr>
+                            <tr>
+                                <td>永康摄像头</td>
+                                <td>video-2</td>
+                                <td>4GIF</td>
+                                <td>128kb</td>
+                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            </tr>
+                            <tr>
+                                <td>永康摄像头</td>
+                                <td>video-3</td>
+                                <td>H264</td>
+                                <td>100b</td>
+                                <td><span class="status-indicator status-warning"></span>警告</td>
+                            </tr>
+                            <tr>
+                                <td>云台</td>
+                                <td>holder-1</td>
+                                <td>H264</td>
+                                <td>1kb</td>
+                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            </tr>
+                            <tr>
+                                <td>声音传感器</td>
+                                <td>some-1</td>
+                                <td>CSV</td>
+                                <td>10kb</td>
+                                <td><span class="status-indicator status-error"></span>故障</td>
+                            </tr>
+                            <tr>
+                                <td>通用传感器</td>
+                                <td>sensor-1</td>
+                                <td>TXT</td>
+                                <td>2kb</td>
+                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            </tr>
+                            <tr>
+                                <td>气象站</td>
+                                <td>meter-1</td>
+                                <td>TXT</td>
+                                <td>500b</td>
+                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Col>
         <Col :span="7">
             <div class="right-1">
                 <div class="right1-1">
-                    <span class='title'><span class="title-text">模块三分析</span></span>
+                    <span class='title'><span class="title-text">数据中心信息</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
                     <span class="angle4"></span>
-                    <chart5 ref='webcastsRisk'></chart5>
-                </div>
-            </div>
-            <div class="right-1">
-                <div class="right1-1">
-                    <span class='title'><span class="title-text">模块四分析</span></span>
-                    <span class="angle1"></span>
-                    <span class="angle2"></span>
-                    <span class="angle3"></span>
-                    <span class="angle4"></span>
-                    <chart6 ref='deviceSafeRisk'></chart6>
-                </div>
-            </div>
-            <div class="right-2">
-                <div class="right1-1">
-                    <span class='title'><span class="title-text">模块五分析</span></span>
-                    <span class="angle1"></span>
-                    <span class="angle2"></span>
-                    <span class="angle3"></span>
-                    <span class="angle4"></span>
-                    <div class="circular">
-                        <div class="canvas">
-                            <div class="subtitle">标题1</div>
-                            <div class="canvasList">
-                                <chart7
-                                    id='canvas_1'
-                                    title="分类1"
-                                    color='#00CCFF'
-                                    ref="ring1"
-                                ></chart7>
-                                <chart7
-                                    id='canvas_2'
-                                    title="分类2"
-                                    color='#EDCE43'
-                                    ref="ring2"
-                                ></chart7>
-                                <chart7
-                                    id='canvas_3'
-                                    title="分类3"
-                                    color='#F83552'
-                                    ref="ring3"
-                                ></chart7>
-                            </div>
+                    <div class="data-center-info">
+                        <div class="info-item">
+                            <span class="info-label">地点：</span>
+                            <span class="info-value">杭州</span>
                         </div>
-                        <chart8 ref="hotWords"></chart8>
+                        <div class="info-item">
+                            <span class="info-label">服务器：</span>
+                            <span class="info-value">阿里云</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">连接延迟：</span>
+                            <span class="info-value">30ms</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">当前时间：</span>
+                            <span class="info-value" id="currentTime"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">日期：</span>
+                            <span class="info-value" id="currentDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">温度：</span>
+                            <span class="info-value">12-14℃</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">平均传输时长：</span>
+                            <span class="info-value">02:45</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">平均处理时长：</span>
+                            <span class="info-value">00:02</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-1" style="height:40%;">
+                <div class="right1-1" style="height:100%;">
+                    <span class='title'><span class="title-text">进程监控</span></span>
+                    <span class="angle1"></span>
+                    <span class="angle2"></span>
+                    <span class="angle3"></span>
+                    <span class="angle4"></span>
+                    <div id="processTotalChart" style="height:100%;"></div>
+                </div>
+            </div>
+            <div class="right-2" style="height:40%;">
+                <div class="right1-1" style="height:100%;">
+                    <span class='title'><span class="title-text">数据库统计</span></span>
+                    <span class="angle1"></span>
+                    <span class="angle2"></span>
+                    <span class="angle3"></span>
+                    <span class="angle4"></span>
+                    <div style="padding:10px;">
+                        <div class="info-item">
+                            <span class="info-label">数据来源：</span>
+                            <span class="info-value">MySQL，HBase</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">查询次数：</span>
+                            <span class="info-value">567,890</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">成功次数：</span>
+                            <span class="info-value">567,890</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">查询时间：</span>
+                            <span class="info-value">0.1s</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -187,547 +182,450 @@
 </template>
 
 <script>
-const chinaMap  = () => import('./components/page3/chinaMap');
-const pie = ()=> import('./components/pie');
-const radar = ()=> import('./components/radar');
-const chart1 = ()=> import('./components/page3/chart1');
-const chart2 = ()=> import('./components/page3/chart2');
-const chart3 = ()=>import('./components/page3/chart3');
-const chart4 = ()=> import('./components/page3/chart4');
-const chart5 = ()=> import('./components/page3/chart5');
-const chart6 = ()=> import('./components/page3/chart6');
-const chart7 = ()=> import('./components/page3/chart7');
-const chart8 =() => import('./components/page3/chart8');
+import * as echarts from 'echarts';
 
 export default {
     name: 'page3',
-    components: {
-        chinaMap,
-        chart1,
-        chart2,
-        pie,
-        chart3,
-        radar,
-        chart4,
-        chart5,
-        chart6,
-        chart7,
-        chart8
-    },
     data() {
         return {
-            //分析标题数据
-            data1: [
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '23%',
-                    data: {name: "数据1", value: 45, color: '#0E4CFF'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '39%',
-                    data: {name: "数据2", value: 60, color: '#B405FD'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '56%',
-                    data: {name: "数据3", value: 12, color: '#FE9900'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '72%',
-                    data: {name: "数据4", value: 24, color: '#FF6600'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '88%',
-                    data: {name: "数据5", value: 21, color: '#7F05FD'}
-
-                }
-            ],
-            // 分析标题1数据
-            data3: [
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '29%',
-                    data: {name: "数据1", value: 45, color: '#0E4CFF'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '54%',
-                    data: {name: "数据2", value: 60, color: '#FE9900'},
-                },
-                {
-                    subtitle: '675人（2345次/4533元）',
-                    top: '78%',
-                    data: {name: "数据3", value: 12, color: '#7F05FD'},
-                },
-            ],
-            data2: [ // 分析标题1用户排名数据
-                {
-                    top: '16%',
-                    color: '14,73,245',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '34%',
-                    color: '170,6,243',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '50%',
-                    color: '254,153,0',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '68%',
-                    color: '255,102,0',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '85%',
-                    color: '127,5,253',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-            ],
-            // 分析标题1 用户排名
-            data4: [
-                {
-                    top: '30%',
-                    color: '14,73,245',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '57%',
-                    color: '254,153,0',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-                {
-                    top: '83%',
-                    color: '127,5,253',
-                    data: [
-                        {name: '王立国', value: 10},
-                        {name: '李建国', value: 9},
-                        {name: '董年月', value: 8},
-                        {name: '高树安', value: 7},
-                        {name: '李白', value: 6},
-                        {name: '杜甫', value: 5},
-                        {name: '刘禹锡', value: 4},
-                        {name: '苏东坡', value: 3},
-                        {name: '杜牧', value: 2},
-                        {name: '李白', value: 1},
-                    ],
-                },
-            ],
-            // 模块二雷达图数据1
-            data5: {
-                title: '雷达图数据1',
-                position: ['5%', '14%'],
-                center: ['50%', '60%'],
-                indicator: [
-                    {text: '分类1'},
-                    {text: '分类2'},
-                    {text: '分类3'},
-                    {text: '分类4'},
-                    {text: '分类5'},
-                    {text: '分类6'}
-                ],
-                data: [
-                    {
-                        name: '数值1',
-                        color: '#0DE4EE',
-                        value: [100, 8, 0.40, -80, 2000, 345]
-                    },
-                    {
-                        name: '数值2',
-                        color: '#0D88F3',
-                        value: [60, 5, 0.30, -100, 1500, 232]
-                    }
-                ]
-            },
-            // 模块二雷达图数据2
-            data6: {
-                title: '雷达图数据2',
-                position: ['5%', '14%'],
-                center: ['50%', '60%'],
-                indicator: [
-                    {text: '分类1'},
-                    {text: '分类2'},
-                    {text: '分类3'},
-                    {text: '分类4'},
-                    {text: '分类5'},
-                    {text: '分类6'},
-                    {text: '分类7'},
-                    {text: '分类8'},
-                ],
-                data: [
-                    {
-                        name: '数值1',
-                        color: '#6514FF',
-                        value: [100, 8, 0.40, -80, 2000, 345, 12, 654]
-                    },
-                    {
-                        name: '数值2',
-                        color: '#B370FD',
-                        value: [60, 5, 0.30, -100, 1500, 232, 432, 43]
-                    }
-                ]
-            },
-            // 模块二雷达图数据3
-            data7: {
-                title: '雷达图数据3',
-                position: ['5%', '14%'],
-                center: ['50%', '60%'],
-                indicator: [
-                    {text: '分类1'},
-                    {text: '分类2'},
-                    {text: '分类3'},
-                    {text: '分类4'},
-                    {text: '分类5'},
-                    {text: '分类6'},
-                    {text: '分类7'},
-                    {text: '分类8'},
-                    {text: '分类9'},
-                    {text: '分类10'},
-                    {text: '分类11'},
-                    {text: '分类12'},
-                ],
-                data: [
-                    {
-                        name: '数值1',
-                        color: '#0096FE',
-                        value: [100, 8, 0.40, -80, 2000, 345, 123, 21, 34, 54, 431, 876]
-                    },
-                    {
-                        name: '数值2',
-                        color: '#9EEAFF',
-                        value: [60, 5, 0.30, -100, 1500, 232, 78, 32, 567, 43, 765, 432,]
-                    }
-                ]
-            },
-            // 模块二雷达图数据4
-            data8: {
-                title: '雷达图数据4',
-                position: ['5%', '14%'],
-                center: ['50%', '60%'],
-                indicator: [
-                    {text: '分类1'},
-                    {text: '分类2'},
-                    {text: '分类3'},
-                    {text: '分类4'},
-                    {text: '分类5'},
-                    {text: '分类6'},
-                ],
-                data: [
-                    {
-                        name: '分类1',
-                        color: '#FD9800',
-                        value: [100, 8, 0.40, -80, 2000, 345],
-                    },
-                    {
-                        name: '分类2',
-                        color: '#FDC673',
-                        value: [60, 5, 0.30, -100, 1500, 232]
-                    }
-                ]
-            },
-            // 模块二柱图数据1
-            data9: {
-                title: '柱图数据1',
-                data: [
-                    {
-                        name: '人数',
-                        color: '#00CCFF',
-                        value: ['112', '212', '42', '232', '123', '67'],
-                    },
-                    {
-                        name: '次数',
-                        color: '#142AFE',
-                        value: ['112', '212', '42', '232', '123', '67']
-                    }
-                ]
-            },
-            // 模块二柱图数据1
-            data10: {
-                title: '柱图数据2',
-                data: [
-                    {
-                        name: '个数',
-                        color: '#6514FF',
-                        value: ['112', '212', '42', '232', '123', '67'],
-                    },
-                    {
-                        name: '条数',
-                        color: '#B370FD',
-                        value: ['112', '212', '42', '232', '123', '67']
-                    }
-                ]
-            },
-            data11: {
-                title: '柱图数据3',
-                data: [
-                    {
-                        name: '主动',
-                        color: '#05467D',
-                        value: ['112', '212', '42', '232', '123', '67'],
-                    },
-                    {
-                        name: '被动',
-                        color: '#52B8FF',
-                        value: ['112', '212', '42', '232', '123', '67']
-                    }
-                ]
-            },
-            data12: {
-                title: '柱图数据4',
-                data: [
-                    {
-                        name: '个数',
-                        color: '#FD9800',
-                        value: ['112', '212', '42', '232', '123', '67'],
-                    },
-                    {
-                        name: '人数',
-                        color: '#FDC673',
-                        value: ['112', '212', '42', '232', '123', '67']
-                    }
-                ]
-            },
-            pieData1: {// 饼图数据1
-                title: "TOP数据1",
-                color: '#2C7BFE',
-
-                data: [
-                    {
-                        value: 60,
-                        name: '分类1',
-                        itemStyle: {
-                            color: '#1456FE'
-                        }
-
-                    },
-                    {
-                        value: 20,
-                        name: '分类2',
-                        itemStyle: {
-                            color: '#00CCFF'
-                        }
-                    },
-                    {
-                        value: 80,
-                        name: '分类3',
-                        itemStyle: {
-                            color: '#142AFE'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类4',
-                        itemStyle: {
-                            color: '#1493FE'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类5',
-                        itemStyle: {
-                            color: '#252448'
-                        }
-                    }
-                ],
-            },
-            pieData2: {// 饼图数据1
-                title: "TOP数据2",
-                color: '#2C7BFE',
-
-                data: [
-                    {
-                        value: 60,
-                        name: '分类1',
-                        itemStyle: {
-                            color: '#142AFE'
-                        }
-
-                    },
-                    {
-                        value: 20,
-                        name: '分类2',
-                        itemStyle: {
-                            color: '#1493FE'
-                        }
-                    },
-                    {
-                        value: 80,
-                        name: '分类3',
-                        itemStyle: {
-                            color: '#252448'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类4',
-                        itemStyle: {
-                            color: '#00CCFF'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类5',
-                        itemStyle: {
-                            color: '#1456FE'
-                        }
-                    }
-                ],
-            },
-            pieData3: {// 饼图数据1
-                title: "TOP数据3",
-                color: '#2C7BFE',
-
-                data: [
-                    {
-                        value: 60,
-                        name: '分类1',
-                        itemStyle: {
-                            color: '#1493FE'
-                        }
-
-                    },
-                    {
-                        value: 20,
-                        name: '分类2',
-                        itemStyle: {
-                            color: '#142AFE'
-                        }
-                    },
-                    {
-                        value: 80,
-                        name: '分类3',
-                        itemStyle: {
-                            color: '#1456FE'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类4',
-                        itemStyle: {
-                            color: '#00CCFF'
-                        }
-                    },
-                    {
-                        value: 40,
-                        name: '分类5',
-                        itemStyle: {
-                            color: '#252448'
-                        }
-                    }
-                ],
-            },
+            charts: {},
             resizeFn: null
         }
     },
     mounted() {
-        this.resizeFn = this.$debounce(()=> {
-            // 通过捕获系统的onresize事件触发我们需要执行的事件
-           this.$refs.channelBar1.setChart();
-           this.$refs.distributionSolider1.setChart();
-           this.$refs.channelBar2.setChart();
-           this.$refs.distributionSolider2.setChart();
-            //this.$refs.pies.setPies();
-           this.$refs.redPocket.setPocket();
-           this.$refs.webcastsRisk.setWebcasts();
-           this.$refs.deviceSafeRisk.setDeviceSafe();
-           this.$refs.ring1.drawRing();
-           this.$refs.ring2.drawRing();
-           this.$refs.ring3.drawRing();
-            for (let i = 1; i < 9; i++) {
-               this.$refs['chart' + i].setChart()
-
-            }
-           this.$refs.chinaMap.setMap();
-           this.$refs.hotWords.setChart();
-
-        }, 500)
-        window.addEventListener('resize', this.resizeFn)
+        this.initCharts();
+        this.updateTime();
+        
+        this.resizeFn = this.$debounce(() => {
+            Object.values(this.charts).forEach(chart => {
+                chart.resize();
+            });
+        }, 500);
+        
+        window.addEventListener('resize', this.resizeFn);
+        
+        // 定时更新数据
+        this.dataUpdateInterval = setInterval(this.updateChartData, 3000);
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.resizeFn)
+        window.removeEventListener('resize', this.resizeFn);
+        clearInterval(this.dataUpdateInterval);
+        Object.values(this.charts).forEach(chart => {
+            chart.dispose();
+        });
+    },
+    methods: {
+        initCharts() {
+            // 1. CPU运行状态图表
+            this.charts.cpuChart = echarts.init(document.getElementById('cpuChart'));
+            this.charts.cpuChart.setOption(this.getCpuOption());
+            
+            // 2. GPU运行状态图表
+            this.charts.gpuChart = echarts.init(document.getElementById('gpuChart'));
+            this.charts.gpuChart.setOption(this.getGpuOption());
+            
+            // 3. 进程总量图表
+            this.charts.processTotalChart = echarts.init(document.getElementById('processTotalChart'));
+            this.charts.processTotalChart.setOption(this.getProcessTotalOption());
+            
+            // 4. 数据类型统计图表
+            this.charts.dataTypeChart = echarts.init(document.getElementById('dataTypeChart'));
+            this.charts.dataTypeChart.setOption(this.getDataTypeOption());
+            
+            // 5. 数据库交互统计图表
+            this.charts.dbChart = echarts.init(document.getElementById('dbChart'));
+            this.charts.dbChart.setOption(this.getDbOption());
+        },
+        updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+            document.getElementById('currentDate').textContent = now.toLocaleDateString();
+            setTimeout(this.updateTime, 1000);
+        },
+        randomData(count, min, max) {
+            const data = [];
+            for (let i = 0; i < count; i++) {
+                data.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return data;
+        },
+        updateChartData() {
+            // 更新CPU数据
+            const cpuOption = this.getCpuOption();
+            cpuOption.series[0].data = this.randomData(7, 20, 80);
+            this.charts.cpuChart.setOption(cpuOption);
+            
+            // 更新GPU数据
+            const gpuOption = this.getGpuOption();
+            gpuOption.series[0].data[0].value = this.randomData(5, 50, 90);
+            this.charts.gpuChart.setOption(gpuOption);
+            
+            // 更新进程总量
+            const processTotalOption = this.getProcessTotalOption();
+            processTotalOption.series[0].data[0].value = Math.floor(Math.random() * 100);
+            this.charts.processTotalChart.setOption(processTotalOption);
+            
+            // 更新数据库数据
+            const dbOption = this.getDbOption();
+            dbOption.series[0].data = this.randomData(7, 40000, 100000);
+            dbOption.series[1].data = dbOption.series[0].data.map(v => v - Math.floor(Math.random() * 1000));
+            dbOption.series[2].data = dbOption.series[0].data.map((v, i) => v - dbOption.series[1].data[i]);
+            dbOption.series[3].data = this.randomData(7, 50, 150);
+            this.charts.dbChart.setOption(dbOption);
+        },
+        getCpuOption() {
+            return {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                title: {
+                    text: 'CPU利用率',
+                    left: 'center',
+                    textStyle: {
+                        color: '#6EDDF1'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6EDDF1'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 0,
+                    max: 100,
+                    axisLabel: {
+                        formatter: '{value}%',
+                        color: '#6EDDF1'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(110, 221, 241, 0.2)'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'CPU使用率',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: {
+                        width: 0
+                    },
+                    showSymbol: false,
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(58, 77, 233, 0.8)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(58, 77, 233, 0.1)'
+                        }])
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: this.randomData(7, 20, 80)
+                }]
+            };
+        },
+        getGpuOption() {
+            return {
+                title: {
+                    text: 'GPU利用率',
+                    left: 'center',
+                    textStyle: {
+                        color: '#6EDDF1'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                radar: {
+                    indicator: [
+                        { name: '计算', max: 100 },
+                        { name: '显存', max: 100 },
+                        { name: '温度', max: 100 },
+                        { name: '功耗', max: 100 },
+                        { name: '带宽', max: 100 }
+                    ],
+                    name: {
+                        textStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(110, 221, 241, 0.5)'
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(110, 221, 241, 0.5)'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'GPU状态',
+                    type: 'radar',
+                    data: [{
+                        value: [80, 65, 70, 60, 75],
+                        name: '当前状态',
+                        areaStyle: {
+                            color: 'rgba(0, 204, 255, 0.4)'
+                        },
+                        lineStyle: {
+                            width: 2,
+                            color: '#00CCFF'
+                        },
+                        itemStyle: {
+                            color: '#00CCFF'
+                        }
+                    }]
+                }]
+            };
+        },
+        getProcessTotalOption() {
+            return {
+                series: [{
+                    type: 'gauge',
+                    center: ['50%', '60%'],
+                    startAngle: 180,
+                    endAngle: 0,
+                    min: 0,
+                    max: 100,
+                    splitNumber: 10,
+                    axisLine: {
+                        lineStyle: {
+                            width: 30,
+                            color: [
+                                [0.3, '#67e0e3'],
+                                [0.7, '#37a2da'],
+                                [1, '#fd666d']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '12%',
+                        width: 20,
+                        offsetCenter: [0, '-60%'],
+                        itemStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 2
+                        }
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 5
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6EDDF1',
+                        fontSize: 12,
+                        distance: -60,
+                        formatter: function(value) {
+                            if (value === 100) {
+                                return '100';
+                            }
+                            return '';
+                        }
+                    },
+                    detail: {
+                        fontSize: 30,
+                        offsetCenter: [0, '0%'],
+                        valueAnimation: true,
+                        formatter: '{value}',
+                        color: '#6EDDF1'
+                    },
+                    data: [{
+                        value: Math.floor(Math.random() * 100)
+                    }]
+                }]
+            };
+        },
+        getDataTypeOption() {
+            return {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 10,
+                    data: ['视频数据', '图像数据', '文本数据', '传感器数据', '日志数据'],
+                    textStyle: {
+                        color: '#6EDDF1'
+                    }
+                },
+                series: [{
+                    name: '数据类型',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold',
+                            color: '#fff'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [{
+                        value: 45,
+                        name: '视频数据'
+                    }, {
+                        value: 20,
+                        name: '图像数据'
+                    }, {
+                        value: 15,
+                        name: '文本数据'
+                    }, {
+                        value: 12,
+                        name: '传感器数据'
+                    }, {
+                        value: 8,
+                        name: '日志数据'
+                    }]
+                }]
+            };
+        },
+        getDbOption() {
+            return {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['查询次数', '成功次数', '失败次数'],
+                    textStyle: {
+                        color: '#6EDDF1'
+                    }
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6EDDF1'
+                    }
+                }],
+                yAxis: [{
+                    type: 'value',
+                    name: '次数',
+                    min: 0,
+                    max: 100000,
+                    interval: 20000,
+                    axisLabel: {
+                        formatter: '{value}',
+                        color: '#6EDDF1'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(110, 221, 241, 0.2)'
+                        }
+                    }
+                }, {
+                    type: 'value',
+                    name: '时间(ms)',
+                    min: 0,
+                    max: 500,
+                    interval: 100,
+                    axisLabel: {
+                        formatter: '{value}',
+                        color: '#6EDDF1'
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#6EDDF1'
+                        }
+                    },
+                    splitLine: {
+                        show: false
+                    }
+                }],
+                series: [{
+                    name: '查询次数',
+                    type: 'bar',
+                    data: [50000, 70000, 90000, 85000, 95000, 80000, 60000]
+                }, {
+                    name: '成功次数',
+                    type: 'bar',
+                    data: [49000, 69500, 89500, 84500, 94500, 79500, 59500]
+                }, {
+                    name: '失败次数',
+                    type: 'bar',
+                    data: [1000, 500, 500, 500, 500, 500, 500]
+                }, {
+                    name: '查询时间',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [120, 90, 80, 70, 60, 80, 100]
+                }]
+            };
+        }
     }
 }
 </script>
@@ -749,45 +647,24 @@ export default {
         position: relative;
         background: #151456;
 
-        #left_5 {
-            height: 100%;
-            width: 45%;
-            float: left;
-        }
-
-        #left_6 {
-            height: 100%;
-            width: 55%;
-            float: left;
-        }
-
-        .circular {
-            height: 100%;
-
-            .canvas {
-                height: 100%;
-                width: 30%;
-                float: left;
-
-                .subtitle {
-                    font-size: 12px;
+        .data-center-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+            padding: 15px;
+            
+            .info-item {
+                margin-bottom: 8px;
+                
+                .info-label {
                     font-weight: bold;
-                    color: #fff;
-                    height: 25px;
-                    padding: 10px 0 ;
-                    text-align: center;
+                    color: #6EDDF1;
                 }
-
-                .canvasList {
-                    height: calc(~'100% - 25px');
-                    text-align: center
+                
+                .info-value {
+                    color: #fff;
                 }
             }
-        }
-
-        .left1 {
-            border-bottom: 1px solid #0D2451;
-            background: #151456;
         }
 
         .title {
@@ -809,6 +686,42 @@ export default {
                 transform: translateY(-5px);
             }
         }
+        
+        .device-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #fff;
+            
+            th, td {
+                border: 1px solid #0D2451;
+                padding: 8px;
+                text-align: left;
+            }
+            
+            th {
+                background-color: #0D2451;
+            }
+            
+            .status-indicator {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin-right: 5px;
+            }
+            
+            .status-normal {
+                background-color: #52c41a;
+            }
+            
+            .status-warning {
+                background-color: #faad14;
+            }
+            
+            .status-error {
+                background-color: #f5222d;
+            }
+        }
     }
 
     .center-top {
@@ -817,14 +730,6 @@ export default {
 
     .center-bottom {
         height: 40%;
-
-        .bottom-radars {
-            height: 55%;
-        }
-
-        .bottom-bars {
-            height: 45%;
-        }
     }
 
     .right-1 {
@@ -836,8 +741,7 @@ export default {
     }
 
     .right-2 {
-        height: 40%;
-
+        height: 30%;
     }
 }
 </style>

@@ -33,7 +33,11 @@ export default {
         const { token, role } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
-        this.$router.push("/home"); // 登录成功后跳转到主页面
+        if (role === "admin") {
+          this.$router.push("/admin"); // 管理员跳转到管理员页面
+        } else {
+          this.$router.push("/page1"); // 普通用户跳转到 page1
+        }
       } catch (error) {
         alert("登录失败，请检查用户名和密码");
       }
