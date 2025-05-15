@@ -7,11 +7,14 @@
           @on-select="(name) => $route.name !== name && $router.push(name)"
           :active-name="$route.name"
         >
-          <MenuItem name="page1"> 主要信息 </MenuItem>
+          <MenuItem name="main_info"> 主要信息 </MenuItem>
           <MenuItem name="page2"> 水质数据 </MenuItem>
           <MenuItem name="page3"> 数据中心 </MenuItem>
           <MenuItem name="page4"> 鱼类数据 </MenuItem>
+          <MenuItem name="ig_center"> 智能中心 </MenuItem>
+
           <MenuItem v-if="role === 'admin'" name="Admin"> 管理员页面 </MenuItem>
+
           <MenuItem @click="logout">退出登录</MenuItem>
         </Menu>
       </div>

@@ -52,6 +52,16 @@ const router = new Router({
           name: "page4",
           component: () => import("@/views/page4"),
         },
+        {
+          path: "/main_info",
+          name: "main_info",
+          component: () => import("@/views/main_info"),
+        },
+        {
+          path: "/ig_center",
+          name: "ig_center",
+          component: () => import("@/views/ig_center"),
+        },
       ],
     },
   ],
