@@ -3,6 +3,8 @@ from extensions import db, jwt  # 从 extensions 导入 db 和 jwt
 from routes import auth, admin
 from models import User
 from flask_cors import CORS
+from data_process.app import data_process_bp
+from data_process.dataprocessing import fish_data
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +16,9 @@ jwt.init_app(app)  # 初始化 JWT
 # 注册路由蓝图
 app.register_blueprint(auth.bp)
 app.register_blueprint(admin.bp)
+app.register_blueprint(data_process_bp)  # 注册 dataprocess 的蓝图
+
+app.add_url_rule("/api/fish_data", view_func=fish_data)
 
 if __name__ == "__main__":
     with app.app_context():
