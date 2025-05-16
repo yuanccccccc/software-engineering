@@ -14,8 +14,6 @@
           <MenuItem name="ig_center"> 智能中心 </MenuItem>
 
           <MenuItem v-if="role === 'admin'" name="Admin"> 管理员页面 </MenuItem>
-
-          <MenuItem @click="logout">退出登录</MenuItem>
         </Menu>
       </div>
       <div class="header-title">大数据可视化平台</div>
@@ -94,12 +92,6 @@ export default {
     this.handleSelect(this.activeName); // 默认显示近一个月
   },
   methods: {
-    logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      this.isLoggedIn = false; // 设置为未登录
-      this.$router.push("/login"); // 跳转到登录页面
-    },
     checkLoginStatus() {
       const token = localStorage.getItem("token");
       const role = localStorage.getItem("role");

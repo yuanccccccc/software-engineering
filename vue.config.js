@@ -1,11 +1,12 @@
 module.exports = {
-    publicPath: './',
-    css: {
-        loaderOptions: {
-            less: {
-                javascriptEnabled: true
-            }
-        }
+  publicPath: "./",
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
     },
-    lintOnSave: false
-}
+  },
+  lintOnSave: false,
+  transpileDependencies: ["chart.js"],
+};
