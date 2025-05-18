@@ -16,7 +16,7 @@
           <MenuItem v-if="role === 'admin'" name="Admin"> 管理员页面 </MenuItem>
         </Menu>
       </div>
-      <div class="header-title">大数据可视化平台</div>
+      <div class="header-title">智慧海洋牧场可视化系统</div>
       <div class="selectRange">
         <Menu
           mode="horizontal"
