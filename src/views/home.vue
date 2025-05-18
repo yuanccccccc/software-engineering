@@ -1,39 +1,51 @@
 <template>
   <div style="height: 100%">
     <div class="header" v-if="isLoggedIn">
-      <div class="selectRange">
+      <div class="header-col left">
         <Menu
           mode="horizontal"
           @on-select="(name) => $route.name !== name && $router.push(name)"
           :active-name="$route.name"
         >
-          <MenuItem name="main_info"> 主要信息 </MenuItem>
-          <MenuItem name="page2"> 水质数据 </MenuItem>
-          <MenuItem name="page3"> 数据中心 </MenuItem>
-          <MenuItem name="page4"> 鱼类数据 </MenuItem>
-          <MenuItem name="ig_center"> 智能中心 </MenuItem>
-
-          <MenuItem v-if="role === 'admin'" name="Admin"> 管理员页面 </MenuItem>
+          <MenuItem name="main_info">主要信息</MenuItem>
+          <MenuItem name="page2">水质数据</MenuItem>
+          <MenuItem name="page4">鱼类数据</MenuItem>
         </Menu>
       </div>
-      <div class="header-title">智慧海洋牧场可视化系统</div>
-      <div class="selectRange">
+      <div class="header-col center">
+        <div class="header-title">智慧海洋牧场可视化系统</div>
+      </div>
+      <div class="header-col right">
         <Menu
           mode="horizontal"
-          @on-select="handleSelect"
-          :active-name="activeName"
+          @on-select="(name) => $route.name !== name && $router.push(name)"
+          :active-name="$route.name"
         >
-          <MenuItem name="day"> 昨日 </MenuItem>
-          <MenuItem name="week"> 近一周 </MenuItem>
-          <MenuItem name="month"> 近一月 </MenuItem>
-          <Submenu name="4">
-            <template slot="title">
-              <Icon type="ios-settings-outline" size="24" color="#60C2D4" />
-            </template>
-            <MenuItem name="filter">筛选</MenuItem>
-          </Submenu>
+          <MenuItem name="page3">数据中心</MenuItem>
+          <MenuItem name="ig_center">智能中心</MenuItem>
+          <MenuItem v-if="role === 'admin'" name="Admin">管理员页面</MenuItem>
         </Menu>
       </div>
+    </div>
+    <div class="page">
+      <router-view v-if="flag" :selectRangeDate="selectRangeDate"></router-view>
+    </div>
+    <div class="footer" v-if="isLoggedIn">
+      <Menu
+        mode="horizontal"
+        @on-select="handleSelect"
+        :active-name="activeName"
+      >
+        <MenuItem name="day">昨日</MenuItem>
+        <MenuItem name="week">近一周</MenuItem>
+        <MenuItem name="month">近一月</MenuItem>
+        <Submenu name="4">
+          <template slot="title">
+            <Icon type="ios-settings-outline" size="24" color="#60C2D4" />
+          </template>
+          <MenuItem name="filter">筛选</MenuItem>
+        </Submenu>
+      </Menu>
     </div>
     <Modal
       v-model="modal"
@@ -41,25 +53,8 @@
       :mask-closable="false"
       @on-ok="getMonthBetween(startTime, endTime)"
     >
-      <DatePicker
-        @on-change="pickStartDate"
-        :options="optionStart"
-        type="date"
-        placeholder="选择开始日期"
-        style="width: 200px"
-      ></DatePicker>
-      <span style="padding: 0 20px; color: #75deef">至</span>
-      <DatePicker
-        @on-change="pickEndDate"
-        :options="optionEnd"
-        type="date"
-        placeholder="选择结束日期"
-        style="width: 200px"
-      ></DatePicker>
+      <!-- ...existing code... -->
     </Modal>
-    <div class="page">
-      <router-view v-if="flag" :selectRangeDate="selectRangeDate"></router-view>
-    </div>
   </div>
 </template>
 
@@ -279,65 +274,70 @@ export default {
   height: 80px;
   background: #03044a;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  &-title {
+  .header-col {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    &.left,
+    &.right {
+      flex: 1.5;
+      justify-content: flex-start;
+    }
+    &.center {
+      flex: 2;
+      justify-content: center;
+    }
+    &.right {
+      justify-content: flex-end;
+    }
+  }
+  .header-title {
     color: #75deef;
     font-size: 30px;
     letter-spacing: 10px;
+    text-align: center;
+    white-space: nowrap;
   }
+}
 
-  .selectRange {
-    height: 100%;
-
-    .ivu-menu-horizontal {
-      background: rgba(255, 255, 255, 0);
-
-      &::after {
-        height: 0;
-      }
-
-      .ivu-menu-item-active {
-        border-bottom: 2px solid #264e5e;
-      }
-
-      .ivu-menu-item,
-      .ivu-menu-submenu {
-        color: #75deef;
-
-        &:hover {
-          border-bottom: 2px solid #264e5e;
-        }
-      }
-
-      .ivu-select-dropdown {
-        background: #09102e;
-
-        .ivu-menu-item {
-          color: #75deef;
-
-          &:hover {
-            border-bottom: 2px solid #264e5e;
-            background-color: rgba(255, 255, 255, 0);
-          }
-        }
-      }
-
-      .ivu-menu-submenu-title {
-        i {
-          margin-right: 0;
-        }
-
-        .ivu-icon-ios-arrow-down {
-          display: none;
-        }
-      }
-    }
+.footer {
+  height: 60px;
+  background: #03044a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .ivu-menu-horizontal {
+    background: transparent;
   }
 }
 
 .page {
-  height: calc(~"100% - 80px");
+  height: calc(~"100% - 140px"); // 80px header + 60px footer
+}
+.header-col .ivu-menu-horizontal {
+  line-height: 80px;
+  height: 80px;
+  background: transparent;
+}
+
+.ivu-menu-horizontal .ivu-menu-item,
+.ivu-menu-horizontal .ivu-menu-submenu {
+  color: #75deef;
+  font-size: 18px;
+  margin: 0 6px;
+  background: transparent;
+  transition: color 0.2s;
+}
+
+.ivu-menu-horizontal .ivu-menu-item-active {
+  border-bottom: 2px solid #75deef;
+  color: #fff;
+}
+
+.ivu-menu-horizontal .ivu-menu-item:hover,
+.ivu-menu-horizontal .ivu-menu-submenu:hover {
+  color: #fff;
+  border-bottom: 2px solid #75deef;
 }
 </style>
