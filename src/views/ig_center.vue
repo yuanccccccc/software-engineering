@@ -33,16 +33,6 @@
             <Advice />
           </div>
         </div>
-        <!-- <div class="right-1">
-                    <div class="right1-1">
-                        <span class='title'><span class="title-gradient">预警</span></span>
-                        <span class="angle1"></span>
-                        <span class="angle2"></span>
-                        <span class="angle3"></span>
-                        <span class="angle4"></span>
-                        <Alarm />
-                    </div>
-                </div> -->
       </div>
     </Col>
 
@@ -84,16 +74,6 @@
 
     <!-- 右列 -->
     <Col :span="8">
-      <!-- <div class="right-1">
-                <div class="right1-1">
-                    <span class='title'><span class="title-gradient">预警</span></span>
-                    <span class="angle1"></span>
-                    <span class="angle2"></span>
-                    <span class="angle3"></span>
-                    <span class="angle4"></span>
-                    <Alarm />
-                </div>
-            </div> -->
       <div class="right-2">
         <div class="right1-1">
           <span class="title"
@@ -106,16 +86,28 @@
           <FishWeight style="height: 100%" />
         </div>
       </div>
+      
+      <!-- 修改后的右列下侧：球和饼图并排 -->
       <div class="right-3">
-        <div class="right1-1">
-          <span class="title"
-            ><span class="title-gradient">鱼群数量占比</span></span
-          >
-          <span class="angle1"></span>
-          <span class="angle2"></span>
-          <span class="angle3"></span>
-          <span class="angle4"></span>
-          <FishPieChart style="height: 100%" />
+        <div class="right3-container">
+          <!-- 球区域 -->
+          <div class="energy-orb-section">
+            <EnergyOrb />
+          </div>
+          
+          <!-- 饼图区域 -->
+          <div class="pie-chart-section">
+            <div class="pie-chart-wrapper">
+              <span class="title"
+                ><span class="title-gradient">鱼群数量占比</span></span
+              >
+              <span class="angle1"></span>
+              <span class="angle2"></span>
+              <span class="angle3"></span>
+              <span class="angle4"></span>
+              <FishPieChart style="height: 100%" />
+            </div>
+          </div>
         </div>
       </div>
     </Col>
@@ -129,6 +121,7 @@ import FishWeight from "./components/ig_center/FishWeight";
 import Alarm from "./components/ig_center/Alarm";
 import Advice from "./components/ig_center/AI_advice";
 import FishBoxPlot from "./components/ig_center/FishBoxPlot";
+import EnergyOrb from "./components/ig_center/EnergyOrb";
 
 export default {
   name: "ig-center",
@@ -139,6 +132,7 @@ export default {
     Alarm,
     Advice,
     FishBoxPlot,
+    EnergyOrb,
   },
   data() {
     return {};
@@ -251,6 +245,36 @@ export default {
 
   .right-3 {
     height: 42%;
+    
+    .right3-container {
+      height: 100%;
+      display: flex;
+      gap: 8px; // 球和饼图之间的间距
+    }
+    
+    .energy-orb-section {
+      width: 35%; // 球占35%宽度
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // 背景样式
+      border: 1px solid #0d2451;
+      background: #151456;
+      position: relative;
+    }
+    
+    .pie-chart-section {
+      flex: 1; // 饼图占剩余宽度
+      height: 100%;
+      
+      .pie-chart-wrapper {
+        height: 100%;
+        border: 1px solid #0d2451;
+        position: relative;
+        background: #151456;
+      }
+    }
   }
 }
 </style>
