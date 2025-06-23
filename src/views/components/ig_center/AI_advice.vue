@@ -18,8 +18,14 @@
         </div>
         <!-- AI回复 -->
         <div class="ai-message">
-          <div class="message-bubble ai-bubble">
-            {{ message.answer }}
+          <div
+            class="message-bubble ai-bubble"
+            :class="{ loading: message.isLoading }"
+          >
+            <span v-if="message.isLoading" class="loading-text"
+              >AI正在思考...</span
+            >
+            <span v-else>{{ message.answer }}</span>
           </div>
         </div>
       </div>
@@ -32,61 +38,125 @@
         placeholder="请输入您的问题..."
         class="input-textarea"
         @keyup.enter="handleSend"
+        :disabled="isLoading"
       ></textarea>
       <button
         @click="handleSend"
         class="send-button"
-        :disabled="!inputText.trim()"
+        :disabled="!inputText.trim() || isLoading"
       >
-        发送
+        <span v-if="isLoading">发送中...</span>
+        <span v-else>发送</span>
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
+// 根据你的后端配置修改API基础URL
+const API_BASE = "http://localhost:5000/api";
+
 export default {
   name: "AI_advice",
   data() {
     return {
       inputText: "",
       messages: [], // 存储聊天记录
+      isLoading: false, // 加载状态
     };
   },
   methods: {
-    handleSend() {
-      if (this.inputText.trim()) {
-        // 添加新的对话到记录中
+    async handleSend() {
+      if (this.inputText.trim() && !this.isLoading) {
+        const userQuestion = this.inputText.trim();
+
+        // 添加新的对话到记录中（先显示用户问题，AI回答暂时为加载状态）
+        const messageIndex = this.messages.length;
         this.messages.push({
-          question: this.inputText.trim(),
-          answer: this.generateAIResponse(this.inputText.trim()),
+          question: userQuestion,
+          answer: "",
+          isLoading: true,
         });
 
         // 清空输入框
         this.inputText = "";
+        this.isLoading = true;
 
         // 滚动到底部
         this.$nextTick(() => {
           this.scrollToBottom();
         });
+
+        try {
+          // 调用AI API
+          const aiResponse = await this.generateAIResponse(userQuestion);
+
+          // 更新消息状态
+          this.messages[messageIndex].answer = aiResponse;
+          this.messages[messageIndex].isLoading = false;
+        } catch (error) {
+          // 处理错误
+          this.messages[messageIndex].answer =
+            "抱歉，AI服务暂时不可用，请稍后再试。";
+          this.messages[messageIndex].isLoading = false;
+          console.error("AI请求失败:", error);
+        } finally {
+          this.isLoading = false;
+
+          // 滚动到底部
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          });
+        }
       }
     },
 
-    generateAIResponse(question) {
-      // 模拟AI响应
-      const responses = [
-        "根据您的问题，建议加强海洋环境监测。",
-        "建议优化鱼类养殖密度，确保水质稳定。",
-        "可以考虑调整投喂策略，提高鱼类生长效率。",
-        "建议关注水温变化，及时调节养殖环境。",
-        "推荐增加水质检测频率，预防疾病发生。",
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
+    async generateAIResponse(question) {
+      try {
+        const response = await axios.post(
+          `${API_BASE}/ai/chat`,
+          {
+            question: question,
+          },
+          {
+            timeout: 30000, // 30秒超时
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.data.status === "success") {
+          return response.data.answer;
+        } else {
+          throw new Error(response.data.error || "AI服务返回错误");
+        }
+      } catch (error) {
+        if (error.code === "ECONNABORTED") {
+          throw new Error("请求超时，请稍后再试");
+        } else if (error.response) {
+          // 服务器响应了错误状态码
+          const errorMsg =
+            error.response.data?.error ||
+            `服务器错误 (${error.response.status})`;
+          throw new Error(errorMsg);
+        } else if (error.request) {
+          // 请求发出但没有收到响应
+          throw new Error("网络连接失败，请检查网络或后端服务是否运行");
+        } else {
+          // 其他错误
+          throw new Error(error.message || "未知错误");
+        }
+      }
     },
 
     scrollToBottom() {
       const chatHistory = this.$refs.chatHistory;
-      chatHistory.scrollTop = chatHistory.scrollHeight;
+      if (chatHistory) {
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }
     },
   },
 };
@@ -95,7 +165,7 @@ export default {
 <style scoped>
 .ai-advice-container {
   height: 100%;
-  position: relative; /* 重要：为绝对定位的子元素提供参考 */
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 20px 10px 10px 10px;
@@ -103,15 +173,15 @@ export default {
 }
 
 .chat-history {
-  flex: 1; /* 占满剩余空间 */
+  flex: 1;
   overflow-y: auto;
   padding: 10px;
   background: rgba(13, 19, 65, 0.2);
   border: 1px solid #0d2451;
   border-radius: 4px;
-  margin-bottom: 5px; /* 与输入框的间距 */
-  max-height: 240px; /* 添加最大高度限制 */
-  min-height: 20px; /* 添加最小高度 */
+  margin-bottom: 5px;
+  max-height: 240px;
+  min-height: 20px;
 }
 
 .empty-message {
@@ -159,9 +229,29 @@ export default {
   border-bottom-left-radius: 4px;
 }
 
+.ai-bubble.loading {
+  opacity: 0.7;
+}
+
+.loading-text {
+  font-style: italic;
+  opacity: 0.8;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
 .input-area {
-  flex-shrink: 0; /* 防止输入框被压缩 */
-  height: 40px; /* 固定高度 */
+  flex-shrink: 0;
+  height: 40px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -189,6 +279,11 @@ export default {
   border-color: #36cbcb;
 }
 
+.input-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .input-textarea::placeholder {
   color: #8cbccd;
 }
@@ -203,7 +298,8 @@ export default {
   font-size: 12px;
   transition: background 0.3s;
   height: 30px;
-  flex-shrink: 0; /* 防止按钮被压缩 */
+  flex-shrink: 0;
+  min-width: 60px;
 }
 
 .send-button:hover:not(:disabled) {

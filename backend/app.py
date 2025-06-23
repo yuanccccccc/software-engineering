@@ -5,6 +5,7 @@ from models import User
 from flask_cors import CORS
 from data_process.app import data_process_bp
 from data_process.dataprocessing import fish_data
+from ai.ai_routes import ai_bp  # 导入 AI 蓝图
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +18,7 @@ jwt.init_app(app)  # 初始化 JWT
 app.register_blueprint(auth.bp)
 app.register_blueprint(admin.bp)
 app.register_blueprint(data_process_bp)  # 注册 dataprocess 的蓝图
+app.register_blueprint(ai_bp)  # 注册 AI 蓝图
 
 app.add_url_rule("/api/fish_data", view_func=fish_data)
 
