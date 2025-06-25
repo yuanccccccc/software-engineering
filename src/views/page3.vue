@@ -30,7 +30,28 @@
                 <span class="angle2"></span>
                 <span class="angle3"></span>
                 <span class="angle4"></span>
-                <div style="height:100%; overflow:auto;">
+                
+                <!-- 操作按钮区域 -->
+                <div class="table-actions">
+                    <Upload 
+                        :action="uploadUrl"
+                        :before-upload="handleBeforeUpload"
+                        :on-success="handleUploadSuccess"
+                        :on-error="handleUploadError"
+                        :show-upload-list="false"
+                        accept=".csv,.xlsx,.xls,.json">
+                        <Button icon="ios-cloud-upload-outline" type="primary">上传数据</Button>
+                    </Upload>
+                    <Button 
+                        icon="ios-download-outline" 
+                        type="success" 
+                        @click="exportData" 
+                        style="margin-left:10px;">
+                        导出数据
+                    </Button>
+                </div>
+                
+                <div style="height:calc(100% - 50px); overflow:auto;">
                     <table class="device-table">
                         <thead>
                             <tr>
@@ -42,54 +63,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>永康摄像头</td>
-                                <td>video-1</td>
-                                <td>H264</td>
-                                <td>4Mb</td>
-                                <td><span class="status-indicator status-normal"></span>正常</td>
-                            </tr>
-                            <tr>
-                                <td>永康摄像头</td>
-                                <td>video-2</td>
-                                <td>4GIF</td>
-                                <td>128kb</td>
-                                <td><span class="status-indicator status-normal"></span>正常</td>
-                            </tr>
-                            <tr>
-                                <td>永康摄像头</td>
-                                <td>video-3</td>
-                                <td>H264</td>
-                                <td>100b</td>
-                                <td><span class="status-indicator status-warning"></span>警告</td>
-                            </tr>
-                            <tr>
-                                <td>云台</td>
-                                <td>holder-1</td>
-                                <td>H264</td>
-                                <td>1kb</td>
-                                <td><span class="status-indicator status-normal"></span>正常</td>
-                            </tr>
-                            <tr>
-                                <td>声音传感器</td>
-                                <td>some-1</td>
-                                <td>CSV</td>
-                                <td>10kb</td>
-                                <td><span class="status-indicator status-error"></span>故障</td>
-                            </tr>
-                            <tr>
-                                <td>通用传感器</td>
-                                <td>sensor-1</td>
-                                <td>TXT</td>
-                                <td>2kb</td>
-                                <td><span class="status-indicator status-normal"></span>正常</td>
-                            </tr>
-                            <tr>
-                                <td>气象站</td>
-                                <td>meter-1</td>
-                                <td>TXT</td>
-                                <td>500b</td>
-                                <td><span class="status-indicator status-normal"></span>正常</td>
+                            <tr v-for="(item, index) in sensorData" :key="index">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.type }}</td>
+                                <td>{{ item.size }}</td>
+                                <td>
+                                    <span :class="['status-indicator', `status-${item.status}`]"></span>
+                                    {{ getStatusText(item.status) }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -183,13 +165,68 @@
 
 <script>
 import * as echarts from 'echarts';
+import { saveAs } from 'file-saver';
+import XLSX from 'xlsx';
 
 export default {
     name: 'page3',
     data() {
         return {
             charts: {},
-            resizeFn: null
+            resizeFn: null,
+            uploadUrl: 'http://localhost:5000/api/sensor/upload', // Python 后端地址
+            sensorData: [
+                {
+                    name: '永康摄像头',
+                    id: 'video-1',
+                    type: 'H264',
+                    size: '4Mb',
+                    status: 'normal'
+                },
+                {
+                    name: '永康摄像头',
+                    id: 'video-2',
+                    type: '4GIF',
+                    size: '128kb',
+                    status: 'normal'
+                },
+                {
+                    name: '永康摄像头',
+                    id: 'video-3',
+                    type: 'H264',
+                    size: '100b',
+                    status: 'warning'
+                },
+                {
+                    name: '云台',
+                    id: 'holder-1',
+                    type: 'H264',
+                    size: '1kb',
+                    status: 'normal'
+                },
+                {
+                    name: '声音传感器',
+                    id: 'some-1',
+                    type: 'CSV',
+                    size: '10kb',
+                    status: 'error'
+                },
+                {
+                    name: '通用传感器',
+                    id: 'sensor-1',
+                    type: 'TXT',
+                    size: '2kb',
+                    status: 'normal'
+                },
+                {
+                    name: '气象站',
+                    id: 'meter-1',
+                    type: 'TXT',
+                    size: '500b',
+                    status: 'normal'
+                }
+            ],
+            dataUpdateInterval: null
         }
     },
     mounted() {
@@ -215,6 +252,71 @@ export default {
         });
     },
     methods: {
+        // 新增的方法
+        getStatusText(status) {
+            const statusMap = {
+                normal: '正常',
+                warning: '警告',
+                error: '故障'
+            };
+            return statusMap[status] || '未知';
+        },
+        
+        handleBeforeUpload(file) {
+            const isCSVorExcel = file.type === 'application/vnd.ms-excel' || 
+                               file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                               file.type === 'application/json' ||
+                               file.name.endsWith('.csv');
+            if (!isCSVorExcel) {
+                this.$Message.error('只能上传 CSV、Excel 或 JSON 格式的文件!');
+                return false;
+            }
+            return true;
+        },
+        
+        handleUploadSuccess(response, file) {
+            if (response.code === 200) {
+                this.$Message.success('数据上传成功!');
+                // 更新传感器数据
+                this.sensorData = response.data || this.sensorData;
+            } else {
+                this.$Message.error(response.message || '上传失败');
+            }
+        },
+        
+        handleUploadError(error, file) {
+            this.$Message.error('上传失败: ' + (error.message || '服务器错误'));
+        },
+        
+        exportData() {
+            try {
+                // 准备导出数据
+                const exportData = this.sensorData.map(item => ({
+                    '设备名称': item.name,
+                    '编号': item.id,
+                    '类型': item.type,
+                    '大小': item.size,
+                    '状态': this.getStatusText(item.status)
+                }));
+                
+                // 创建工作簿
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(exportData);
+                
+                // 添加工作表到工作簿
+                XLSX.utils.book_append_sheet(wb, ws, '传感器数据');
+                
+                // 生成Excel文件并下载
+                const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '传感器数据.xlsx');
+                
+                this.$Message.success('数据导出成功!');
+            } catch (error) {
+                console.error('导出失败:', error);
+                this.$Message.error('数据导出失败!');
+            }
+        },
+        
         initCharts() {
             // 1. CPU运行状态图表
             this.charts.cpuChart = echarts.init(document.getElementById('cpuChart'));
@@ -236,12 +338,14 @@ export default {
             this.charts.dbChart = echarts.init(document.getElementById('dbChart'));
             this.charts.dbChart.setOption(this.getDbOption());
         },
+        
         updateTime() {
             const now = new Date();
             document.getElementById('currentTime').textContent = now.toLocaleTimeString();
             document.getElementById('currentDate').textContent = now.toLocaleDateString();
             setTimeout(this.updateTime, 1000);
         },
+        
         randomData(count, min, max) {
             const data = [];
             for (let i = 0; i < count; i++) {
@@ -249,6 +353,7 @@ export default {
             }
             return data;
         },
+        
         updateChartData() {
             // 更新CPU数据
             const cpuOption = this.getCpuOption();
@@ -273,6 +378,7 @@ export default {
             dbOption.series[3].data = this.randomData(7, 50, 150);
             this.charts.dbChart.setOption(dbOption);
         },
+        
         getCpuOption() {
             return {
                 tooltip: {
@@ -348,6 +454,7 @@ export default {
                 }]
             };
         },
+        
         getGpuOption() {
             return {
                 title: {
@@ -410,6 +517,7 @@ export default {
                 }]
             };
         },
+        
         getProcessTotalOption() {
             return {
                 series: [{
@@ -477,6 +585,7 @@ export default {
                 }]
             };
         },
+        
         getDataTypeOption() {
             return {
                 tooltip: {
@@ -535,6 +644,7 @@ export default {
                 }]
             };
         },
+        
         getDbOption() {
             return {
                 tooltip: {
@@ -721,6 +831,14 @@ export default {
             .status-error {
                 background-color: #f5222d;
             }
+        }
+        
+        .table-actions {
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            background: rgba(13, 36, 81, 0.5);
+            border-bottom: 1px solid #0D2451;
         }
     }
 
