@@ -1,5 +1,10 @@
 <template>
-  <div class="chinaMap"></div>
+  <div class="chinaMap">
+    <!-- ✅ 下载按钮 -->
+    <button @click="downloadChart('中国地图趋势图.png')" class="download-btn">
+      下载图表
+    </button>
+  </div>
 </template>
 
 <script>
@@ -20,7 +25,7 @@ export default {
       const data = provinceSeries.map(item => ({ name: item.name, value: item.value }))
 
       const response2 = await axios.get("http://localhost:5000/api/province_trend")
-      const topTrend = response2.data.slice(0, 6) // 限制为最多6条
+      const topTrend = response2.data.slice(0, 6)
 
       const geoCoordMap = {
         '北京市': [116.40, 39.90], '天津市': [117.20, 39.13], '上海市': [121.47, 31.23],
@@ -139,6 +144,21 @@ export default {
       this.myChart.clear()
       this.myChart.resize()
       this.myChart.setOption(option)
+    },
+
+    // ✅ 新增方法：下载图表为 PNG
+    downloadChart(filename = 'china_map.png') {
+      if (!this.myChart) return;
+      const url = this.myChart.getDataURL({
+        type: 'png',
+        backgroundColor: '#fff',
+        pixelRatio: 2
+      });
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
     }
   },
   mounted() {
@@ -150,5 +170,26 @@ export default {
 <style lang="less" scoped>
 .chinaMap {
   height: 100%;
+  position: relative;
 }
+
+.download-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(92, 169, 230, 0.6);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 100;
+  transition: background 0.3s ease;
+  font-size: 12px;
+}
+
+.download-btn:hover {
+  background: rgba(92, 169, 230, 0.9);
+}
+
 </style>
