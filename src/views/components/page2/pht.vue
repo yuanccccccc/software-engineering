@@ -1,13 +1,19 @@
 <template>
   <div class="leftBar">
     <h3 class="chart-title">水温/PH值与省份的关系</h3>
-    <div>
-      <label style="color: white; font-size: 12px;">筛选省份：</label>
-      <select v-model="selectedProvince" @change="fetchData">
-        <option value="">全部</option>
-        <option v-for="p in provinces" :key="p" :value="p">{{ p }}</option>
-      </select>
+
+    <!-- ✅ 工具栏 -->
+    <div class="toolbar">
+      <div>
+        <label style="color: white; font-size: 12px;">筛选省份：</label>
+        <select v-model="selectedProvince" @change="fetchData">
+          <option value="">全部</option>
+          <option v-for="p in provinces" :key="p" :value="p">{{ p }}</option>
+        </select>
+      </div>
+      <button class="download-btn" @click="downloadChart('pht_chart.png')">下载图表</button>
     </div>
+
     <div ref="chart" class="chart-container"></div>
   </div>
 </template>
@@ -42,8 +48,8 @@ export default {
           { bottom: '5%', top: '60%', height: '35%' }
         ],
         tooltip: { trigger: 'item' },
-        xAxis: { name: '温度 (℃)', type: 'value', gridIndex: 0 ,min: 0, max: 32 },
-        yAxis: { name: 'pH 值', type: 'value', gridIndex: 0 ,min:6,max:10},
+        xAxis: { name: '温度 (℃)', type: 'value', gridIndex: 0, min: 0, max: 32 },
+        yAxis: { name: 'pH 值', type: 'value', gridIndex: 0, min: 6, max: 10 },
         series: [
           {
             type: 'scatter',
@@ -89,6 +95,20 @@ export default {
 
       if (!this.chart) this.chart = echarts.init(this.$refs.chart, 'walden')
       this.chart.setOption(option, true)
+    },
+
+    // ✅ 下载图表为 PNG
+    downloadChart(filename = 'chart.png') {
+      if (!this.chart) return;
+      const url = this.chart.getDataURL({
+        type: 'png',
+        backgroundColor: '#fff',
+        pixelRatio: 2
+      });
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
     }
   },
   mounted() {
@@ -108,17 +128,42 @@ export default {
   border-radius: 6px;
   overflow: hidden;
 }
+
 .chart-title {
   color: #ffffff;
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* ✅ 下载按钮样式 */
+.download-btn {
+  background: rgba(92, 169, 230, 0.6);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+.download-btn:hover {
+  background: rgba(92, 169, 230, 0.9);
+}
+
 .chart-container {
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 80px); /* 留出标题和工具栏空间 */
   margin-top: 5px;
 }
+
 select {
   background: linear-gradient(135deg, #0d1a33, #102040);
   border: 1px solid #00ccff;
