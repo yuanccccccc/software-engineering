@@ -1,6 +1,6 @@
 <template>
   <div class="chart-wrapper">
-    <!-- 所有筛选字段 -->
+    <!-- ✅ 筛选字段 + 下载按钮 -->
     <div class="filters">
       <div v-for="(options, key) in filterOptions" :key="key" class="filter-item">
         <label>{{ key }}：</label>
@@ -10,7 +10,6 @@
         </select>
       </div>
 
-      <!-- 展示数据单选，统一为下拉框 -->
       <div class="filter-item">
         <label>展示数据：</label>
         <select v-model="selectedMetric" @change="fetchData">
@@ -18,6 +17,12 @@
             {{ metric.replace(/\(.*?\)/, '') }}
           </option>
         </select>
+      </div>
+
+      <!-- ✅ 下载按钮 -->
+      <div class="filter-item download-item">
+        <label style="visibility: hidden;">下载</label>
+        <button class="download-btn" @click="downloadChart('water_quality_chart.png')">下载图表</button>
       </div>
     </div>
 
@@ -51,7 +56,7 @@ export default {
         '溶解氧(mg/L)', '电导率(μS/cm)', 'pH(无量纲)', '氨氮(mg/L)',
         '总磷(mg/L)', '总氮(mg/L)', '水温(℃)', '高锰酸盐指数(mg/L)', '浊度(NTU)'
       ],
-      selectedMetric: '水温(℃)' // 默认选中温度
+      selectedMetric: '水温(℃)'
     }
   },
   mounted() {
@@ -62,10 +67,6 @@ export default {
   methods: {
     onFilterChange() {
       this.fetchFilterOptions()
-      this.fetchData()
-    },
-    selectMetric(metric) {
-      this.selectedMetric = metric
       this.fetchData()
     },
     async fetchFilterOptions() {
@@ -88,7 +89,7 @@ export default {
         const res = await axios.get(`${API_BASE}/water_quality`, {
           params: {
             ...this.filters,
-            metric: this.selectedMetric  // ✅ 向后端传递所选指标字段
+            metric: this.selectedMetric
           }
         })
         this.chartData = res.data
@@ -105,15 +106,7 @@ export default {
       const values = this.chartData.map(d => parseFloat(d[this.selectedMetric]) || 0)
 
       const option = {
-        // title: {
-        //   text: '水质变化趋势',
-        //   textStyle: { color: '#fff' }
-        // },
         tooltip: { trigger: 'axis' },
-        // legend: {
-        //   data: [cleanName],
-        //   textStyle: { color: '#fff' }
-        // },
         xAxis: {
           type: 'category',
           data: dates,
@@ -136,6 +129,19 @@ export default {
       }
 
       this.chart.setOption(option)
+    },
+    // ✅ 下载图表为 PNG
+    downloadChart(filename = 'chart.png') {
+      if (!this.chart) return
+      const url = this.chart.getDataURL({
+        type: 'png',
+        backgroundColor: '#fff',
+        pixelRatio: 2
+      })
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      link.click()
     }
   }
 }
@@ -147,14 +153,16 @@ export default {
   height: 100%;
   background: #151456;
   padding: 10px;
-overflow: hidden; /* ✅ 禁止滚动条 */
+  overflow: hidden;
 }
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 5px;
 }
+
 .filter-item {
   display: flex;
   flex-direction: column;
@@ -168,6 +176,24 @@ overflow: hidden; /* ✅ 禁止滚动条 */
   margin-bottom: 4px;
 }
 
+.download-item {
+  justify-content: flex-end;
+}
+
+.download-btn {
+  background: rgba(92, 169, 230, 0.6);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+.download-btn:hover {
+  background: rgba(92, 169, 230, 0.9);
+}
+
 select {
   background: linear-gradient(135deg, #0d1a33, #102040);
   border: 1px solid #00ccff;
@@ -179,32 +205,14 @@ select {
   box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
   transition: box-shadow 0.3s ease;
 }
-
 select:hover {
   box-shadow: 0 0 12px rgba(0, 204, 255, 0.6);
   border-color: #33ccff;
 }
 
-.metric-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: #1f1f5e;
-  border-radius: 6px;
-}
-.metric-list li {
-  padding: 4px 10px;
-  cursor: pointer;
-  color: white;
-}
-.metric-list li.selected {
-  background-color: #3d6eff;
-  font-weight: bold;
-  border-radius: 4px;
-}
 .chart-container {
   width: 100%;
   height: 380px;
-  overflow: hidden; /* ✅ 禁止滚动条 */
+  overflow: hidden;
 }
 </style>
