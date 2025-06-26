@@ -15,7 +15,13 @@
           <option v-for="b in basins" :key="b" :value="b">{{ b }}</option>
         </select>
       </div>
+      <!-- ✅ 下载按钮 -->
+      <div class="download-wrapper">
+        <label style="visibility: hidden;">下载</label>
+        <button class="download-btn" @click="downloadTable">下载表格</button>
+      </div>
     </div>
+
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
@@ -74,6 +80,22 @@ export default {
         }
       })
       this.tableData = res.data
+    },
+    // ✅ 下载表格为 CSV 文件
+    downloadTable() {
+      const headers = ['断面名称', '最新站点情况']
+      const rows = this.tableData.map(row => [row.断面名称, row.站点情况])
+
+      let csvContent = '\uFEFF' + headers.join(',') + '\n' +
+        rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.setAttribute('download', '站点状态表.csv')
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
   }
 }
@@ -88,8 +110,28 @@ export default {
 }
 .filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 10px;
+  align-items: flex-end;
+}
+.download-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.download-btn {
+  background: rgba(92, 169, 230, 0.6);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+.download-btn:hover {
+  background: rgba(92, 169, 230, 0.9);
 }
 .table-wrapper {
   max-height: 170px;
@@ -121,7 +163,6 @@ select {
   box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
   transition: box-shadow 0.3s ease;
 }
-
 select:hover {
   box-shadow: 0 0 12px rgba(0, 204, 255, 0.6);
   border-color: #33ccff;
