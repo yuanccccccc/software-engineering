@@ -30,23 +30,6 @@
     <div class="page">
       <router-view v-if="flag" :selectRangeDate="selectRangeDate"></router-view>
     </div>
-    <div class="footer" v-if="isLoggedIn">
-      <Menu
-        mode="horizontal"
-        @on-select="handleSelect"
-        :active-name="activeName"
-      >
-        <MenuItem name="day">昨日</MenuItem>
-        <MenuItem name="week">近一周</MenuItem>
-        <MenuItem name="month">近一月</MenuItem>
-        <Submenu name="4">
-          <template slot="title">
-            <Icon type="ios-settings-outline" size="24" color="#60C2D4" />
-          </template>
-          <MenuItem name="filter">筛选</MenuItem>
-        </Submenu>
-      </Menu>
-    </div>
     <Modal
       v-model="modal"
       title="选择时间"
@@ -57,7 +40,7 @@
     </Modal>
   </div>
 </template>
-
+asfdafdsfsf
 <script>
 export default {
   name: "",
@@ -313,7 +296,7 @@ export default {
 }
 
 .page {
-  height: calc(~"100% - 140px"); // 80px header + 60px footer
+  height: calc(~"100% - 80px"); // 只有 80px header
 }
 .header-col .ivu-menu-horizontal {
   line-height: 80px;
