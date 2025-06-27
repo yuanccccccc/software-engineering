@@ -9,6 +9,7 @@ from fish_recognition import fish_recognizer  # 导入鱼类识别器
 import os
 from werkzeug.utils import secure_filename
 from ai.ai_routes import ai_bp  # 导入 AI 蓝图
+from fish_length.routes import fish_length_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +33,7 @@ app.register_blueprint(auth.bp)
 app.register_blueprint(admin.bp)
 app.register_blueprint(data_process_bp)  # 注册 dataprocess 的蓝图
 app.register_blueprint(ai_bp)  # 注册 AI 蓝图
+app.register_blueprint(fish_length_bp)  # 新增这一行
 
 app.add_url_rule("/api/fish_data", view_func=fish_data)
 
