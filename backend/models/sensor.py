@@ -1,5 +1,5 @@
 from datetime import datetime
-from app import mongo
+from backend import mongo
 
 
 class Sensor:
