@@ -11,7 +11,7 @@ def create_app(config_class=Config):
     
     mongo.init_app(app)
     
-    from app.routes.sensor_routes import sensor_bp
+    from backend.routes.sensor_routes import sensor_bp
     app.register_blueprint(sensor_bp, url_prefix='/api/sensor')
     
     return app
