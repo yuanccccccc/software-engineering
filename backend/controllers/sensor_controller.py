@@ -1,8 +1,8 @@
 from flask import jsonify, send_file, request
 import os
 from werkzeug.utils import secure_filename
-from app.models.sensor import Sensor
-from app.utils.file_processor import FileProcessor
+from backend.models.sensor import Sensor
+from backend.utils.file_processor import FileProcessor
 from config import Config
 import pandas as pd
 
