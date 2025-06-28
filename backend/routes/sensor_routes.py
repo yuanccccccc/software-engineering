@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.controllers.sensor_controller import (
+from backend.controllers.sensor_controller import (
     upload_sensor_data, 
     get_all_sensors, 
     export_sensor_data
